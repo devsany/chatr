@@ -1,0 +1,105 @@
+import { get, getDatabase, ref, set, update } from "firebase/database";
+import React, { useContext, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AppContext } from "./context";
+
+const UserListing = () => {
+  const [userData, setUserData] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const { oneUser } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  const fetchData = async () => {
+    try {
+      const db = getDatabase();
+      const dbRef = ref(db, "users");
+      const snapshot = await get(dbRef);
+
+      if (snapshot.exists()) {
+        const arrayData = Array.isArray(snapshot.val())
+          ? snapshot.val()
+          : Object.keys(snapshot.val()).map((key) => ({
+              id: key,
+              ...snapshot.val()[key],
+            }));
+
+        const mainUserList = arrayData.filter(
+          (item) => item.UUID !== oneUser[0].UUID
+        );
+        setUserData(mainUserList);
+
+        // Fetch previously selected users from Firebase
+        const userSelectionRef = ref(db, `userSelections/${oneUser[0].UUID}`);
+        const selectionSnapshot = await get(userSelectionRef);
+
+        if (selectionSnapshot.exists()) {
+          setSelectedUsers(selectionSnapshot.val());
+        }
+      } else {
+        console.log("No data available at this path.");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleSelectUser = async (user) => {
+    const updatedSelectedUsers = selectedUsers.includes(user.UUID)
+      ? selectedUsers.filter((uuid) => uuid !== user.UUID)
+      : [...selectedUsers, user.UUID];
+
+    setSelectedUsers(updatedSelectedUsers);
+
+    // Save updated selection to Firebase
+    const db = getDatabase();
+    const userSelectionRef = ref(db, `userSelections/${oneUser[0].UUID}`);
+    await set(userSelectionRef, updatedSelectedUsers);
+  };
+
+  const navigateToSelectedUsers = () => {
+    navigate("/selected-users");
+  };
+
+  return (
+    <div>
+      <div>User Logged In: {oneUser[0]?.name}</div>
+      <h2>All Users:</h2>
+      {userData.map((item) => (
+        <div
+          key={item.UUID}
+          className="border pl-5 pr-5 pt-3 pb-3 hover:bg-teal-200"
+        >
+          <label>
+            <input
+              type="checkbox"
+              checked={selectedUsers.includes(item.UUID)}
+              onChange={() => handleSelectUser(item)}
+            />
+            <span> Select</span>
+          </label>
+          <NavLink
+            to={`conversation/${
+              item.UUID < oneUser[0].UUID
+                ? `${item.UUID}_${oneUser[0].UUID}`
+                : `${oneUser[0].UUID}_${item.UUID}`
+            }`}
+          >
+            <div>Name: {item.name}</div>
+          </NavLink>
+        </div>
+      ))}
+      <button
+        onClick={navigateToSelectedUsers}
+        className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        View Selected Users
+      </button>
+    </div>
+  );
+};
+
+export default UserListing;
