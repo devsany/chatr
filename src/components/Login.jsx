@@ -73,19 +73,25 @@ const Login = () => {
           Login
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <button
-            onClick={pasteFromClipboard}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Paste
-          </button>
           <div>
-            <label
-              htmlFor="ID"
-              className="block text-gray-600 font-semibold mb-2"
-            >
-              Enter Generated Password
-            </label>
+            <div className="flex justify-between items-center">
+              <div>
+                <label
+                  htmlFor="ID"
+                  className="block text-gray-600 font-semibold mb-2"
+                >
+                  Enter Generated Password
+                </label>
+              </div>
+              <div>
+                <button
+                  onClick={pasteFromClipboard}
+                  className=" px-4 py-2 bg-indigo-500 mb-3 hover:bg-indigo-600 transition duration-300 text-white rounded  "
+                >
+                  Paste
+                </button>
+              </div>
+            </div>
             <input
               required
               type="text"
