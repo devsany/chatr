@@ -408,7 +408,7 @@ const Registration = () => {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(uniqueID).then(() => setIsCopied(true));
+    navigator.clipboard.writeText(password).then(() => setIsCopied(true));
   };
 
   const handleAvatarSelect = (avatar, name) => {
