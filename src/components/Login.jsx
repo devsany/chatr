@@ -50,18 +50,18 @@ const Login = () => {
       }
     }
   };
-  // const handlePaste = async () => {
-  //   if (navigator.clipboard && navigator.clipboard.readText) {
-  //     try {
-  //       const clipboardText = await navigator.clipboard.readText();
-  //       setText(clipboardText);
-  //     } catch (error) {
-  //       console.error("Failed to read clipboard contents:", error);
-  //     }
-  //   } else {
-  //     alert("Clipboard API not supported in this browser.");
-  //   }
-  // };
+  // Function to handle pasting the clipboard content
+  const pasteFromClipboard = async () => {
+    try {
+      // Read text from the clipboard
+      const clipboardText = await navigator.clipboard.readText();
+
+      // Set the text into the input field
+      setId(clipboardText);
+    } catch (err) {
+      console.error("Failed to read clipboard contents: ", err);
+    }
+  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -73,12 +73,12 @@ const Login = () => {
           Login
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* <button
-            onClick={handlePaste}
+          <button
+            onClick={pasteFromClipboard}
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Paste
-          </button> */}
+          </button>
           <div>
             <label
               htmlFor="ID"
