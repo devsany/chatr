@@ -8,6 +8,8 @@ import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import Conversation from "./components/Conversation";
 import Login from "./components/Login";
 import SelectedUsers from "./components/SelectedUsers";
+import Navbar from "./components/Navbar";
+import Setting from "./components/Setting";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -15,23 +17,14 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <ul>
-          <li>
-            <NavLink to="/">Registration</NavLink>
-          </li>
-          <li>
-            <NavLink to="/login">Login</NavLink>
-          </li>
-          <li>
-            <NavLink to="/userList">User List</NavLink>
-          </li>
-        </ul>
+        <Navbar />
 
         <Routes>
           <Route path="/" element={<RegistrationForm />} />
           <Route path="/login" element={<Login />} />
           <Route path="/userList" element={<UserListing />} />
           <Route path="/selected-users" element={<SelectedUsers />} />
+          <Route path="/settings" element={<Setting />} />
           <Route
             path="/selected-users/conversation/:id"
             element={<Conversation />}

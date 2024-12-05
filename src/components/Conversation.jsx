@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { AppContext } from "./context";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
+import SelectedUsers from "./SelectedUsers";
 
 const Conversation = () => {
   const [messages, setMessages] = useState([]);
@@ -10,8 +11,11 @@ const Conversation = () => {
   const [RID, setRID] = useState("");
   const { id } = useParams();
   const { oneUser } = useContext(AppContext);
-  const senderId = oneUser[0].xx0c3w8d;
-
+  const senderId = oneUser[0].uniqueID;
+  const location = useLocation();
+  console.log(location.state.item);
+  // const {  item.name, item.uniqueName, item.avatar } = location.state || {}; // Destructure the passed state
+  console.log(oneUser);
   const splitingID = () => {
     const [senderURLId, receiverURLId] = id.split("_");
     if (senderURLId === senderId) {
@@ -125,44 +129,65 @@ const Conversation = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
-      <h2 className="text-3xl font-bold text-center text-teal-600 mb-6">
-        Conversation
-      </h2>
-      <div
-        className="bg-white max-w-3xl mx-auto rounded-xl shadow-lg overflow-hidden"
-        style={{ height: "80vh" }}
-      >
+    <div className="">
+      <div>
+        <NavLink to="/selected-users">back</NavLink>
+      </div>
+      <div className="bg-gray-100 h-[100%] p-6">
         <div
-          className="overflow-y-auto p-6 space-y-4"
-          style={{ height: "calc(100% - 150px)" }}
+          className="bg-white max-w-3xl mx-auto rounded-xl shadow-lg pb-5 overflow-hidden"
+          style={{ height: "80vh" }}
         >
-          {messages.length > 0 ? (
-            renderMessages()
-          ) : (
-            <p className="text-center text-gray-400">No messages yet.</p>
-          )}
-        </div>
-
-        {/* Message Input Area */}
-        <form
-          onSubmit={handleSendMessage}
-          className="flex items-center justify-between bg-gray-50 p-4 border-t border-gray-200"
-        >
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message here..."
-            rows="1"
-            className="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-          <button
-            type="submit"
-            className="ml-4 bg-teal-600 text-white py-2 px-6 rounded-lg hover:bg-teal-700 focus:outline-none"
+          <div className="border-b  ">
+            <div className="flex items-center">
+              <div>
+                <img
+                  src={location.state.item?.avatar}
+                  className="w-12 h-12 rounded-full m-1 border-blue-400 border p-1"
+                  alt=""
+                />
+              </div>
+              <div>{location.state.item?.avatarName}</div>
+            </div>
+            <div className="flex">
+              <div className="ml-2 font-semibold text-xl">
+                {location.state.item?.name}
+              </div>
+              <div className="ml-2 font-thin text-xl">
+                ({location.state.item?.uniqueName})
+              </div>
+            </div>
+          </div>
+          <div
+            className="overflow-y-auto p-6 space-y-4"
+            style={{ height: "calc(100% - 150px)" }}
           >
-            Send
-          </button>
-        </form>
+            {messages.length > 0 ? (
+              renderMessages()
+            ) : (
+              <p className="text-center text-gray-400">No messages yet.</p>
+            )}
+          </div>
+          {/* Message Input Area */}
+          <form
+            onSubmit={handleSendMessage}
+            className="flex items-center justify-between bg-gray-50 p-4 border-t border-gray-200"
+          >
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type your message here..."
+              rows="1"
+              className="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+            <button
+              type="submit"
+              className="ml-4 bg-teal-600 text-white py-2 px-6 rounded-lg hover:bg-teal-700 focus:outline-none"
+            >
+              Send
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

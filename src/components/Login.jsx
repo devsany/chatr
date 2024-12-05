@@ -1,80 +1,118 @@
 import { get, getDatabase, ref } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "./context";
 
 const Login = () => {
   const [userData, setUserData] = useState([]);
   const [id, setId] = useState("");
   const { setOneUser } = useContext(AppContext);
+  const [text, setText] = useState("");
   const nav = useNavigate();
-  if (id) {
-    userData.filter((item) => {
-      return item.uniqueID === id;
-    });
-  }
+
   const fetchData = async () => {
     try {
-      const db = getDatabase(); // Initialize the Realtime Database
-      const dbRef = ref(db, "users"); // Reference to the specific path
-      const snapshot = await get(dbRef); // Fetch data
+      const db = getDatabase();
+      const dbRef = ref(db, "users");
+      const snapshot = await get(dbRef);
 
       if (snapshot.exists()) {
-        // Convert object to array if needed
         const arrayData = Array.isArray(snapshot.val())
           ? snapshot.val()
           : Object.keys(snapshot.val()).map((key) => ({
               id: key,
               ...snapshot.val()[key],
             }));
-
         setUserData(arrayData);
         console.log("Array of objects retrieved:", arrayData);
-
-        return snapshot.val(); // Return the retrieved data
+        return snapshot.val();
       } else {
         console.log("No data available at this path.");
         return null;
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      throw error; // Handle error accordingly
+      throw error;
     }
   };
-  console.log(userData);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (id) {
       const exist = userData.filter((item) => {
         return item.password === id;
       });
-      if (exist.length == 1) {
+      if (exist.length === 1) {
         nav("/userList");
         setOneUser(exist);
+      } else {
+        alert("User ID does not exist");
       }
-      console.log(exist);
-    } else {
-      alert("userId do not exist");
     }
   };
+  // const handlePaste = async () => {
+  //   if (navigator.clipboard && navigator.clipboard.readText) {
+  //     try {
+  //       const clipboardText = await navigator.clipboard.readText();
+  //       setText(clipboardText);
+  //     } catch (error) {
+  //       console.error("Failed to read clipboard contents:", error);
+  //     }
+  //   } else {
+  //     alert("Clipboard API not supported in this browser.");
+  //   }
+  // };
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
-    <div>
-      <form onSubmit={handleSubmit} action="">
-        <label htmlFor="ID">Enter Unique ID</label>
-        <input
-          required
-          type="text"
-          name="ID"
-          id="ID"
-          placeholder="Enter Unique ID"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-        />
-        <button type="submit">Submit</button>
-      </form>
+    <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-300 flex justify-center items-center">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Login
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* <button
+            onClick={handlePaste}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Paste
+          </button> */}
+          <div>
+            <label
+              htmlFor="ID"
+              className="block text-gray-600 font-semibold mb-2"
+            >
+              Enter Generated Password
+            </label>
+            <input
+              required
+              type="text"
+              name="ID"
+              id="ID"
+              placeholder="Enter Unique ID"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition duration-300"
+          >
+            Submit
+          </button>
+          <div className="text-xs">
+            If you don’t have an account, please proceed to the{" "}
+            <NavLink to="/" className="text-blue-600 underline">
+              Registration
+            </NavLink>{" "}
+            page to create one!
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

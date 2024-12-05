@@ -71,6 +71,7 @@ const SelectedUsers = () => {
                 className="flex items-center justify-between bg-white p-4 mb-4 rounded-lg border-2 border-gray-200 hover:bg-purple-200 transition duration-300"
               >
                 <NavLink
+                  state={{ item }}
                   to={`conversation/${
                     item.uniqueID < oneUser[0].uniqueID
                       ? `${item.uniqueID}_${oneUser[0].uniqueID}`

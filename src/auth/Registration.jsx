@@ -1,32 +1,105 @@
 import React, { useState } from "react";
 import { getDatabase, ref, push, set } from "firebase/database";
 import app from "../firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const avatars = [
-  "https://img.freepik.com/free-vector/young-man-with-glasses-illustration_1308-174706.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/smiling-girl-character_146237-61.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybridg",
-  "https://img.freepik.com/free-psd/3d-illustration-with-online-avatar_23-2151303097.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-vector/young-man-black-shirt_1308-173618.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-rendering-hair-style-avatar-design_23-2151869145.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/avatar-man-with-beard-office-worker-wearing-glasses-it-developer-engineer-programmer_277909-144.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/young-man-face-avater-vector-illustration-design_968209-13.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/young-gamer-girl-avatar-streaming-with-colored-hair-gaming-headset_704771-3536.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-illustration-person-with-glasses_23-2149436189.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436178.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-rendering-hair-style-avatar-design_23-2151869123.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-illustration-person-with-glasses_23-2149436190.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-photo/photo-3d-call-center-operator-with-headphones-generative-ai_742418-4932.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-rendering-hair-style-avatar-design_23-2151869149.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/avatar-man-with-glasses-portrait-young-guy-vector-illustration-face_217290-1809.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/free-psd/3d-illustration-with-online-avatar_23-2151303087.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/man-profile-cartoon_18591-58483.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/art-illustration_684058-1736.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/art-illustration_684058-982.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-vector/boy-character-white-background_995281-5601.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
-  "https://img.freepik.com/premium-photo/photo-happy-3d-female-it-technical-support-officer-generative-ai_742418-4960.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+  {
+    img: "https://img.freepik.com/free-vector/young-man-with-glasses-illustration_1308-174706.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Leo",
+  },
+  {
+    img: "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Eli",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/smiling-girl-character_146237-61.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybridg",
+    name: "Max",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-illustration-with-online-avatar_23-2151303097.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Aya",
+  },
+  {
+    img: "https://img.freepik.com/free-vector/young-man-black-shirt_1308-173618.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Sam",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-rendering-hair-style-avatar-design_23-2151869145.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Ben",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/avatar-man-with-beard-office-worker-wearing-glasses-it-developer-engineer-programmer_277909-144.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Ivy",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/young-man-face-avater-vector-illustration-design_968209-13.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Nia",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/young-gamer-girl-avatar-streaming-with-colored-hair-gaming-headset_704771-3536.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Kai",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Ray",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-illustration-person-with-glasses_23-2149436189.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Bot",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436178.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Neo",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-rendering-hair-style-avatar-design_23-2151869123.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Lex",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-illustration-person-with-glasses_23-2149436190.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Zed",
+  },
+  {
+    img: "https://img.freepik.com/premium-photo/photo-3d-call-center-operator-with-headphones-generative-ai_742418-4932.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Ada",
+  },
+  {
+    img: "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Eva",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-rendering-hair-style-avatar-design_23-2151869149.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Ana",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/avatar-man-with-glasses-portrait-young-guy-vector-illustration-face_217290-1809.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Mia",
+  },
+  {
+    img: "https://img.freepik.com/free-psd/3d-illustration-with-online-avatar_23-2151303087.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Lia",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/man-profile-cartoon_18591-58483.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Zoe",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/art-illustration_684058-1736.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Ian",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/art-illustration_684058-982.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Joe",
+  },
+  {
+    img: "https://img.freepik.com/premium-vector/boy-character-white-background_995281-5601.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Amy",
+  },
+  {
+    img: "https://img.freepik.com/premium-photo/photo-happy-3d-female-it-technical-support-officer-generative-ai_742418-4960.jpg?ga=GA1.1.531472918.1726312312&semt=ais_hybrid",
+    name: "Roy",
+  },
 ];
 
 const Registration = () => {
@@ -38,6 +111,7 @@ const Registration = () => {
   const [selectedAvatar, setSelectedAvatar] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [password, setPassword] = useState("");
+  const [avatarName, setAvatarName] = useState("");
   const avatarsPerPage = 5;
   //unique name username generater
   function generateFunnyUsername() {
@@ -287,7 +361,7 @@ const Registration = () => {
 
     return `${randomAdjective}${randomNoun}-${randomNumber}`;
   }
-
+  const nav = useNavigate();
   // Example usage
   console.log(generateFunnyUsername()); // Example output: "SillyPenguin-54321"
 
@@ -318,6 +392,7 @@ const Registration = () => {
       password,
       uniqueName: generateFunnyUsername(),
       avatar: selectedAvatar,
+      avatarName: avatarName,
     })
       .then(() => {
         setName("");
@@ -327,6 +402,7 @@ const Registration = () => {
         setPassword("");
         setSelectedAvatar("");
         alert("Data Saved successfully");
+        nav("/login");
       })
       .catch((err) => console.error("Error:", err.message));
   };
@@ -335,8 +411,9 @@ const Registration = () => {
     navigator.clipboard.writeText(uniqueID).then(() => setIsCopied(true));
   };
 
-  const handleAvatarSelect = (avatar) => {
+  const handleAvatarSelect = (avatar, name) => {
     setSelectedAvatar(avatar);
+    setAvatarName(name);
   };
 
   const indexOfLastAvatar = currentPage * avatarsPerPage;
@@ -415,7 +492,7 @@ const Registration = () => {
           </div>
           <div>
             <h2 className="text-gray-700 font-semibold mb-2">
-              Generated Unique ID
+              Generated Password
             </h2>
             <div className="flex items-center gap-4">
               <button
@@ -423,7 +500,7 @@ const Registration = () => {
                 onClick={() => setPassword(generate8CharString())}
                 className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600"
               >
-                Generate ID
+                Generate Password
               </button>
               {password && (
                 <div className="flex items-center gap-2">
@@ -446,19 +523,32 @@ const Registration = () => {
               Select an Avatar
             </h2>
             <div className="flex gap-4 justify-center flex-wrap">
-              {currentAvatars.map((avatar, index) => (
-                <img
-                  key={index}
-                  src={avatar}
-                  alt={`Avatar ${index + 1}`}
-                  className={`w-20 h-20 rounded-full border-4 ${
-                    selectedAvatar === avatar
-                      ? "border-indigo-500"
-                      : "border-gray-300"
-                  } cursor-pointer`}
-                  onClick={() => handleAvatarSelect(avatar)}
-                />
-              ))}
+              {currentAvatars.map((avatar, index) => {
+                return (
+                  <>
+                    <div className="block">
+                      <div>
+                        <img
+                          key={index}
+                          src={avatar.img}
+                          alt={`Avatar ${index + 1}`}
+                          className={`w-20 h-20 rounded-full border-4 ${
+                            selectedAvatar === avatar
+                              ? "border-indigo-500"
+                              : "border-gray-300"
+                          } cursor-pointer`}
+                          onClick={() =>
+                            handleAvatarSelect(avatar.img, avatar.name)
+                          }
+                        />
+                      </div>
+                      <div className="text-center font-semibold text-gray-700">
+                        {avatar.name}
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
             </div>
             <div className="flex justify-center mt-4 gap-4">
               <button
