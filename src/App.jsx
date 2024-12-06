@@ -30,7 +30,11 @@ function App() {
         />
         <Route
           path="/dashboard"
-          element={<ProtectedRoute component={Dashboard} />}
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
         />
       </Routes>
       {/* selected-users */}

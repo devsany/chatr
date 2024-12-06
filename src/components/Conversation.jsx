@@ -130,10 +130,15 @@ const Conversation = () => {
 
   return (
     <div className="">
-      <div>
-        <NavLink to="/selected-users">back</NavLink>
-      </div>
       <div className="bg-gray-100 h-[100%] p-6">
+        <div>
+          <NavLink
+            className="bg-blue-500 pl-2 pr-2 pt-1 pb-1 rounded-md font-semibold text-white shadow-md hover:bg-blue-700"
+            to="/selected-users"
+          >
+            Back
+          </NavLink>
+        </div>
         <div
           className="bg-white max-w-3xl mx-auto rounded-xl shadow-lg pb-5 overflow-hidden"
           style={{ height: "80vh" }}

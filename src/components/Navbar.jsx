@@ -66,6 +66,17 @@ function Navbar() {
           <li className="border-b border-blue-700 lg:border-none">
             {isAuthenticated && (
               <NavLink
+                to="/userList"
+                className="block py-4 px-6 text-lg hover:bg-blue-600 lg:hover:bg-transparent lg:hover:text-blue-300"
+                onClick={() => setMenuOpen(false)}
+              >
+                UserList
+              </NavLink>
+            )}
+          </li>
+          <li className="border-b border-blue-700 lg:border-none">
+            {isAuthenticated && (
+              <NavLink
                 to="/dashboard"
                 className="block py-4 px-6 text-lg hover:bg-blue-600 lg:hover:bg-transparent lg:hover:text-blue-300"
                 onClick={() => setMenuOpen(false)}
