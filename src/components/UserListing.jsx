@@ -217,8 +217,8 @@ const UserListing = () => {
                     }`}
                   >
                     {selectedUsers.includes(item.uniqueID)
-                      ? "Deselect"
-                      : "Select"}
+                      ? "Select"
+                      : "Diselect"}
                   </span>
                 </button>
 
