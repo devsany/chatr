@@ -112,6 +112,7 @@ const Registration = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [password, setPassword] = useState("");
   const [avatarName, setAvatarName] = useState("");
+  const [selectAccountStatus, setSelectAccountStatus] = useState("");
   const avatarsPerPage = 5;
   //unique name username generater
   function generateFunnyUsername() {
@@ -372,9 +373,9 @@ const Registration = () => {
       return v.toString(16);
     });
   function generate8CharString() {
-    const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let result = "";
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 5; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
       result += characters[randomIndex];
     }
@@ -393,6 +394,7 @@ const Registration = () => {
       uniqueName: generateFunnyUsername(),
       avatar: selectedAvatar,
       avatarName: avatarName,
+      selectAccountStatus,
     })
       .then(() => {
         setName("");
@@ -401,6 +403,7 @@ const Registration = () => {
         setUniqueID("");
         setPassword("");
         setSelectedAvatar("");
+        setSelectAccountStatus("");
         alert("Data Saved successfully");
         nav("/login");
       })
@@ -489,6 +492,29 @@ const Registration = () => {
               placeholder="Enter your mobile number"
               required
             />
+          </div>
+          <div>
+            <label
+              className="block text-gray-700 font-semibold mb-2"
+              htmlFor="mobileNumber"
+            >
+              Select status
+            </label>
+            <select
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              name="status"
+              id="status"
+              onChange={(e) => setSelectAccountStatus(e.target.value)}
+            >
+              <option
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+                selected
+              >
+                Choose account Status
+              </option>
+              <option value="makePrivantAccount">Private</option>
+              <option value="makePublicAccount">Public</option>
+            </select>
           </div>
           <div>
             <h2 className="text-gray-700 font-semibold mb-2">

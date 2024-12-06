@@ -9,7 +9,7 @@ const Login = () => {
   const { setOneUser } = useContext(AppContext);
   const [text, setText] = useState("");
   const nav = useNavigate();
-
+  const { login } = useContext(AppContext);
   const fetchData = async () => {
     try {
       const db = getDatabase();
@@ -45,6 +45,7 @@ const Login = () => {
       if (exist.length === 1) {
         nav("/userList");
         setOneUser(exist);
+        login();
       } else {
         alert("User ID does not exist");
       }

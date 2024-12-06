@@ -72,7 +72,7 @@ const SelectedUsers = () => {
               >
                 <NavLink
                   state={{ item }}
-                  to={`conversation/${
+                  to={`conversation/${ 
                     item.uniqueID < oneUser[0].uniqueID
                       ? `${item.uniqueID}_${oneUser[0].uniqueID}`
                       : `${oneUser[0].uniqueID}_${item.uniqueID}`

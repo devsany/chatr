@@ -10,28 +10,30 @@ import Login from "./components/Login";
 import SelectedUsers from "./components/SelectedUsers";
 import Navbar from "./components/Navbar";
 import Setting from "./components/Setting";
-
+import Dashboard from "./components/dashboard/Dashboard";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <BrowserRouter>
-        <Navbar />
+      <Navbar />
 
-        <Routes>
-          <Route path="/" element={<RegistrationForm />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/userList" element={<UserListing />} />
-          <Route path="/selected-users" element={<SelectedUsers />} />
-          <Route path="/settings" element={<Setting />} />
-          <Route
-            path="/selected-users/conversation/:id"
-            element={<Conversation />}
-          />
-        </Routes>
-        {/* selected-users */}
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<RegistrationForm />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/userList" element={<UserListing />} />
+        <Route path="/selected-users" element={<SelectedUsers />} />
+        <Route path="/settings" element={<Setting />} />
+
+        <Route
+          path="/selected-users/conversation/:id"
+          element={<Conversation />}
+        />
+        <Route
+          path="/dashboard"
+          element={<ProtectedRoute component={Dashboard} />}
+        />
+      </Routes>
+      {/* selected-users */}
     </>
   );
 }
