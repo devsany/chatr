@@ -364,7 +364,7 @@ const Registration = () => {
   }
   const nav = useNavigate();
   // Example usage
-  console.log(generateFunnyUsername()); // Example output: "SillyPenguin-54321"
+  // console.log(generateFunnyUsername()); // Example output: "SillyPenguin-54321"
 
   const generateUUID = () =>
     "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {

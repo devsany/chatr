@@ -24,7 +24,7 @@ const Login = () => {
               ...snapshot.val()[key],
             }));
         setUserData(arrayData);
-        console.log("Array of objects retrieved:", arrayData);
+        // console.log("Array of objects retrieved:", arrayData);
         return snapshot.val();
       } else {
         console.log("No data available at this path.");

@@ -13,9 +13,9 @@ const Conversation = () => {
   const { oneUser } = useContext(AppContext);
   const senderId = oneUser[0].uniqueID;
   const location = useLocation();
-  console.log(location.state.item);
+  // console.log(location.state.item);
   // const {  item.name, item.uniqueName, item.avatar } = location.state || {}; // Destructure the passed state
-  console.log(oneUser);
+  // console.log(oneUser);
   const splitingID = () => {
     const [senderURLId, receiverURLId] = id.split("_");
     if (senderURLId === senderId) {

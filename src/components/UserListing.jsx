@@ -23,7 +23,7 @@ const UserListing = () => {
     setIsMessageBoxVisible(false);
     setMessage("");
   };
-  console.log(privateUserUniqueId);
+  // console.log(privateUserUniqueId);
   const handleSendRequest = async () => {
     try {
       const notificationId = `${privateUserUniqueId}_${
@@ -40,8 +40,8 @@ const UserListing = () => {
         status: "pending",
         createdAt: new Date().toISOString(),
       });
-      console.log("Notification sent!");
-      console.log("Message Sent:", message);
+      // console.log("Notification sent!");
+      // console.log("Message Sent:", message);
 
       // Hide message box and clear the message input field
       setIsMessageBoxVisible(false);
@@ -77,7 +77,7 @@ const UserListing = () => {
     //   console.error("Error sending notification:", error);
     // }
   };
-  console.log(oneUser);
+  // console.log(oneUser);
   const fetchData = async () => {
     try {
       const db = getDatabase();
@@ -114,7 +114,7 @@ const UserListing = () => {
       console.error("Error fetching data:", error);
     }
   };
-  console.log(userData);
+  // console.log(userData);
   useEffect(() => {
     fetchData();
   }, []);
