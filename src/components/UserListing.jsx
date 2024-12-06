@@ -223,13 +223,15 @@ const UserListing = () => {
                 </button>
 
                 <div className="md:flex md:justify-between  items-center">
-                  <div className="flex items-center  ">
-                    <img
-                      src={item.avatar}
-                      className="rounded-full w-12 h-12 border-2 border-red-400"
-                      alt={`${item.name}'s avatar`}
-                    />
-                    <div className="ml-3 text-red-700 font-semibold">
+                  <div className="md:flex text-center items-center  ">
+                    <div className="flex justify-center">
+                      <img
+                        src={item.avatar}
+                        className="rounded-full w-12 h-12 border-2 border-red-400"
+                        alt={`${item.name}'s avatar`}
+                      />
+                    </div>
+                    <div className="ml-3 text-xs md:text-md text-red-700 font-semibold">
                       {item.name} - {item.uniqueName}
                     </div>
                   </div>
