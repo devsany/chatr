@@ -11,7 +11,7 @@ const MessagingApp = () => {
   const [SID, setSID] = useState("");
   const [RID, setRID] = useState("");
   const { id } = useParams();
-  const { oneUser } = useContext(AppContext);
+  const { oneUser, theam } = useContext(AppContext);
   const senderId = oneUser[0].xx0c3w8d;
 
   const generateInitials = (name) => {
@@ -140,7 +140,9 @@ const MessagingApp = () => {
       return (
         <div key={msg.id}>
           {isNewDay && (
-            <div className="text-center my-2 text-gray-500 font-semibold text-sm">
+            <div
+              className={`text-center  my-2 text-gray-500 font-semibold text-sm`}
+            >
               {date}
             </div>
           )}
